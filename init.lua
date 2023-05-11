@@ -262,6 +262,7 @@ vim.keymap.set('n', '<C-l>', ':wincmd l<Enter>', { silent = true })
 vim.keymap.set('n', '<leader>q', ':q<Enter>', { silent = true })
 vim.keymap.set('n', '<leader>w', ':w<Enter>', { silent = true })
 vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<Enter>', { silent = true })
+vim.keymap.set('n', '<leader>fe', ':NvimTreeFindFile<Enter>', { silent = true })
 
 vim.keymap.set('n', '<leader>lf', ':Format<Enter>', { silent = true })
 
@@ -452,6 +453,7 @@ local servers = {
   -- pyright = {},
   -- rust_analyzer = {},
   -- tsserver = {},
+  angularls = {},
 
   lua_ls = {
     Lua = {
