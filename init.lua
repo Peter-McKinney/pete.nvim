@@ -197,6 +197,9 @@ vim.o.hlsearch = false
 -- Make line numbers default
 vim.wo.number = true
 
+-- Set relative line numbers
+vim.wo.relativenumber = true
+
 -- Enable mouse mode
 vim.o.mouse = 'a'
 
@@ -275,6 +278,12 @@ vim.keymap.set('n', '<leader>gk', require('gitsigns').prev_hunk, { desc = '[G]it
 vim.keymap.set('n', '<leader>gr', require('gitsigns').reset_hunk, { desc = '[G]it [r]eset Hunk' })
 vim.keymap.set('n', '<leader>gR', require('gitsigns').reset_buffer, { desc = '[G]it [R]eset Buffer' })
 
+-- [[ resize splits ]]
+
+vim.keymap.set('n', '<A-Up>', ':resize -2<Enter>');
+vim.keymap.set('n', '<A-Down>', ':resize +2<Enter>');
+vim.keymap.set('n', '<A-Left>', ':vertical resize -2<Enter>');
+vim.keymap.set('n', '<A-Right>', ':vertical resize +2<Enter>');
 
 -- [[ Configure nvim-tree ]]
 require('nvim-tree').setup()
