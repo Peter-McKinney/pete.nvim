@@ -3,6 +3,6 @@
 --
 -- See the kickstart.nvim README for more information
 return {
-	{ dir = '~/github/uneet.nvim', dev = true },
-	{ 'nvim-tree/nvim-tree.lua' }
+	{ 'nvim-tree/nvim-tree.lua' },
+	{ dir = '~/github/uneet.nvim', dev = true }
 }
