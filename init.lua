@@ -303,6 +303,13 @@ vim.keymap.set('n', '<leader>gk', require('gitsigns').prev_hunk, { desc = '[G]it
 vim.keymap.set('n', '<leader>gr', require('gitsigns').reset_hunk, { desc = '[G]it [r]eset Hunk' })
 vim.keymap.set('n', '<leader>gR', require('gitsigns').reset_buffer, { desc = '[G]it [R]eset Buffer' })
 
+-- [[ fugitive ]]
+vim.keymap.set('n', '<leader>gb', ':Git blame<Enter>', { desc = '[G]it [b]lame', silent = true })
+vim.keymap.set('n', '<leader>gd', ':Gdiffsplit<Enter>', { desc = '[G]it [d]iff', silent = true })
+vim.keymap.set('n', '<leader>gw', ':GBrowse<Enter>', { desc = '[G]it Bro[w]se', silent = true})
+vim.keymap.set('n', '<leader>gP', ':Git push<Enter>', { desc = '[G]it [P]ush', silent = true})
+vim.keymap.set('n', '<leader>gl', ':Gclog<Enter>', { desc = '[G]it [L]og', silent = true})
+
 -- [[ resize splits ]]
 
 vim.keymap.set('n', '<A-Up>', ':resize -2<Enter>');
