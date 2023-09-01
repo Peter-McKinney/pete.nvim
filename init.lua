@@ -219,6 +219,8 @@ require('lazy').setup({
 -- Set highlight on search
 vim.o.hlsearch = false
 
+vim.o.swapfile = false
+
 -- Make line numbers default
 vim.wo.number = true
 
@@ -285,9 +287,10 @@ vim.keymap.set('n', '<C-l>', ':wincmd l<Enter>', { silent = true })
 
 vim.keymap.set('n', '<leader>q', ':q<Enter>', { silent = true })
 vim.keymap.set('n', '<leader>w', ':w<Enter>', { silent = true })
-vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<Enter>', { silent = true })
-vim.keymap.set('n', '<leader>fe', ':NvimTreeFindFile<Enter>', { silent = true })
+vim.keymap.set('n', '<leader>e', ':Lexplore<Enter>', { silent = true })
+vim.keymap.set('n', '<leader>fe', ':Lexplore %:p:h<Enter>', { silent = true })
 
+-- [[ Format ]]
 vim.keymap.set('n', '<leader>lf', ':Format<Enter>', { silent = true })
 
 -- [[ insert mode maps ]]
@@ -311,14 +314,19 @@ vim.keymap.set('n', '<leader>gP', ':Git push<Enter>', { desc = '[G]it [P]ush', s
 vim.keymap.set('n', '<leader>gl', ':Gclog<Enter>', { desc = '[G]it [L]og', silent = true})
 
 -- [[ resize splits ]]
-
 vim.keymap.set('n', '<A-Up>', ':resize -2<Enter>');
 vim.keymap.set('n', '<A-Down>', ':resize +2<Enter>');
 vim.keymap.set('n', '<A-Left>', ':vertical resize -2<Enter>');
 vim.keymap.set('n', '<A-Right>', ':vertical resize +2<Enter>');
 
--- [[ Configure nvim-tree ]]
-require('nvim-tree').setup()
+vim.keymap.set('n', '<leader>pa', '[[<Cmd>let @+=expand(\'%:p\')<CR>]]', { desc = 'Copy absolute path', silent = true })
+vim.keymap.set('n', '<leader>pr', '[[<Cmd>let @+=expand(\'%:t\')<CR>]]', { desc = 'Copy file name', silent = true })
+
+-- [[ Configure autopairs ]]
+require('nvim-autopairs').setup()
+
+-- -- [[ Configure nvim-tree ]]
+-- require('nvim-tree').setup()
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
@@ -349,12 +357,21 @@ end, { desc = '[/] Fuzzily search in current buffer' })
 
 vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
 vim.keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
+vim.keymap.set('n', '<leader>sj', require('telescope.builtin').jumplist, { desc = '[S]earch [J]ump' })
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>st', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>lw', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>gs', require('telescope.builtin').git_status, { desc = 'Search [G]it [S]tatus' })
 vim.keymap.set('n', '<leader>gt', require('telescope.builtin').git_stash, { desc = 'Search [G]it S[t]ash' })
+vim.keymap.set('n', '<leader>fc', require('telescope.builtin').git_commits, { desc = 'Search Git Commits' })
+vim.keymap.set('n', '<leader>fbc', require('telescope.builtin').git_bcommits, { desc = 'Search Git [B]uffer [C]ommits' })
+vim.keymap.set('n', '<leader>fbb', require('telescope.builtin').git_branches, { desc = 'Search Git [Branches]' })
+vim.keymap.set('n', '<leader>fo', require('telescope.builtin').oldfiles, { desc = 'Search [O]ld [F]iles' })
+vim.keymap.set('n', '<leader>sp', require('telescope.builtin').search_history, { desc = '[S]earch [P]revious Searches' })
+vim.keymap.set('n', '<leader>sq', require('telescope.builtin').quickfixhistory, { desc = '[S]earch [q]uickfix history' })
+vim.keymap.set('n', '<leader>sk', require('telescope.builtin').keymaps, { desc = '[S]earch [K]eymaps' })
+vim.keymap.set('n', '<leader>sc', require('telescope.builtin').command_history, { desc = '[S]earch [C]ommand history' })
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -453,7 +470,7 @@ local on_attach = function(_, bufnr)
   nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
   nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
   nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-  nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+  -- nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
   -- See `:help K` for why this keymap
   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
@@ -461,11 +478,11 @@ local on_attach = function(_, bufnr)
 
   -- Lesser used LSP functionality
   nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-  nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
-  nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
-  nmap('<leader>wl', function()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  end, '[W]orkspace [L]ist Folders')
+  -- nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
+  -- nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
+  -- nmap('<leader>wl', function()
+  --   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+  -- end, '[W]orkspace [L]ist Folders')
 
   -- Create a command `:Format` local to the LSP buffer
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
