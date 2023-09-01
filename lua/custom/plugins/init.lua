@@ -3,6 +3,9 @@
 --
 -- See the kickstart.nvim README for more information
 return {
-	{ 'nvim-tree/nvim-tree.lua' },
-	{ dir = '~/github/uneet.nvim', dev = true }
+	{ "windwp/nvim-autopairs" },
+	{
+	    "iamcco/markdown-preview.nvim",
+	    run = function() vim.fn["mkdp#util#install"]() end,
+	}
 }
