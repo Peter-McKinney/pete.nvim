@@ -299,6 +299,8 @@ vim.keymap.set('i', 'kj', '<Esc>')
 -- [[ quick fix lists ]]
 vim.keymap.set('n', ']q', ':cnext<Enter>', {silent = true})
 vim.keymap.set('n', '[q', ':cprev<Enter>', {silent = true})
+vim.keymap.set('n', ']Q', ':clast<Enter>', {silent = true})
+vim.keymap.set('n', '[Q', ':cfirst<Enter>', {silent = true})
 
 -- [[ git using gitsigns ]]
 vim.keymap.set('n', '<leader>gj', require('gitsigns').next_hunk, { desc = '[G]it Next Hunk' })
