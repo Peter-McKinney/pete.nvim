@@ -287,8 +287,8 @@ vim.keymap.set('n', '<C-l>', ':wincmd l<Enter>', { silent = true })
 
 vim.keymap.set('n', '<leader>q', ':q<Enter>', { silent = true })
 vim.keymap.set('n', '<leader>w', ':w<Enter>', { silent = true })
-vim.keymap.set('n', '<leader>e', ':Lexplore<Enter>', { silent = true })
-vim.keymap.set('n', '<leader>fe', ':Lexplore %:p:h<Enter>', { silent = true })
+vim.keymap.set('n', '<leader>e', ':Lexplore<Enter>:vertical resize 30<Enter>', { silent = true })
+vim.keymap.set('n', '<leader>fe', ':Lexplore %:p:h<Enter>:vertical resize 30<Enter>', { silent = false })
 
 -- [[ Format ]]
 vim.keymap.set('n', '<leader>lf', ':Format<Enter>', { silent = true })
