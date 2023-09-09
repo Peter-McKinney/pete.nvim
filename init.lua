@@ -314,6 +314,7 @@ vim.keymap.set('n', '<leader>gd', ':Gdiffsplit<Enter>', { desc = '[G]it [d]iff',
 vim.keymap.set('n', '<leader>gw', ':GBrowse<Enter>', { desc = '[G]it Bro[w]se', silent = true})
 vim.keymap.set('n', '<leader>gP', ':Git push<Enter>', { desc = '[G]it [P]ush', silent = true})
 vim.keymap.set('n', '<leader>gl', ':Gclog<Enter>', { desc = '[G]it [L]og', silent = true})
+vim.keymap.set('n', '<leader>gh', ':0Gclog<Enter>', { desc = '[G]it [H]istory for File', silent = true})
 
 -- [[ resize splits ]]
 vim.keymap.set('n', '<A-Up>', ':resize -2<Enter>');
