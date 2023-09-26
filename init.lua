@@ -126,6 +126,8 @@ require('lazy').setup({
         vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk, { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
         vim.keymap.set('n', '<leader>gn', require('gitsigns').next_hunk, { buffer = bufnr, desc = '[G]o to [N]ext Hunk' })
         vim.keymap.set('n', '<leader>ph', require('gitsigns').preview_hunk, { buffer = bufnr, desc = '[P]review [H]unk' })
+        vim.keymap.set('n', '<leader>gr', require('gitsigns').reset_hunk, { desc = '[G]it [r]eset Hunk' })
+        vim.keymap.set('n', '<leader>gR', require('gitsigns').reset_buffer, { desc = '[G]it [R]eset Buffer' })
       end,
     },
   },
@@ -287,8 +289,8 @@ vim.keymap.set('n', '<C-l>', ':wincmd l<Enter>', { silent = true })
 
 vim.keymap.set('n', '<leader>q', ':q<Enter>', { silent = true })
 vim.keymap.set('n', '<leader>w', ':w<Enter>', { silent = true })
-vim.keymap.set('n', '<leader>e', ':Lexplore<Enter>:vertical resize 30<Enter>', { silent = true })
-vim.keymap.set('n', '<leader>fe', ':Lexplore %:p:h<Enter>:vertical resize 30<Enter>', { silent = false })
+vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<Enter>', { silent = true })
+vim.keymap.set('n', '<leader>fe', ':NvimTreeFindFile<Enter>', { silent = false })
 
 -- [[ Format ]]
 vim.keymap.set('n', '<leader>lf', ':Format<Enter>', { silent = true })
@@ -302,12 +304,6 @@ vim.keymap.set('n', '[q', ':cprev<Enter>', {silent = true})
 vim.keymap.set('n', ']Q', ':clast<Enter>', {silent = true})
 vim.keymap.set('n', '[Q', ':cfirst<Enter>', {silent = true})
 
--- [[ git using gitsigns ]]
-vim.keymap.set('n', '<leader>gj', require('gitsigns').next_hunk, { desc = '[G]it Next Hunk' })
-vim.keymap.set('n', '<leader>gk', require('gitsigns').prev_hunk, { desc = '[G]it Prev Hunk' })
-vim.keymap.set('n', '<leader>gr', require('gitsigns').reset_hunk, { desc = '[G]it [r]eset Hunk' })
-vim.keymap.set('n', '<leader>gR', require('gitsigns').reset_buffer, { desc = '[G]it [R]eset Buffer' })
-
 -- [[ fugitive ]]
 vim.keymap.set('n', '<leader>gb', ':Git blame<Enter>', { desc = '[G]it [b]lame', silent = true })
 vim.keymap.set('n', '<leader>gd', ':Gdiffsplit<Enter>', { desc = '[G]it [d]iff', silent = true })
@@ -316,11 +312,16 @@ vim.keymap.set('n', '<leader>gP', ':Git push<Enter>', { desc = '[G]it [P]ush', s
 vim.keymap.set('n', '<leader>gl', ':Gclog<Enter>', { desc = '[G]it [L]og', silent = true})
 vim.keymap.set('n', '<leader>gh', ':0Gclog<Enter>', { desc = '[G]it [H]istory for File', silent = true})
 
+vim.keymap.set('n', '<leader>dl', ':diffget //3<Enter>', { desc = '[D]iffget right', silent = true})
+vim.keymap.set('n', '<leader>dh', ':diffget //2<Enter>', { desc = '[D]iffget left', silent = true})
+vim.keymap.set('n', '<leader>dm', ':Gvdiffsplit!<Enter>', { desc = 'Three Way Diff Merge', silent = true})
+
 -- [[ resize splits ]]
 vim.keymap.set('n', '<A-Up>', ':resize -2<Enter>');
 vim.keymap.set('n', '<A-Down>', ':resize +2<Enter>');
 vim.keymap.set('n', '<A-Left>', ':vertical resize -2<Enter>');
 vim.keymap.set('n', '<A-Right>', ':vertical resize +2<Enter>');
+vim.keymap.set('n', '<leader>=', '<C-w>=', { desc = 'resize splits equal', silent = true })
 
 vim.keymap.set('n', '<leader>pa', '[[<Cmd>let @+=expand(\'%:p\')<CR>]]', { desc = 'Copy absolute path', silent = true })
 vim.keymap.set('n', '<leader>pr', '[[<Cmd>let @+=expand(\'%:t\')<CR>]]', { desc = 'Copy file name', silent = true })
@@ -329,7 +330,8 @@ vim.keymap.set('n', '<leader>pr', '[[<Cmd>let @+=expand(\'%:t\')<CR>]]', { desc 
 require('nvim-autopairs').setup()
 
 -- -- [[ Configure nvim-tree ]]
--- require('nvim-tree').setup()
+vim.g.loaded_netrwPlugin = 1
+require('nvim-tree').setup()
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
