@@ -367,7 +367,7 @@ vim.keymap.set('n', '<leader>/', function()
   })
 end, { desc = '[/] Fuzzily search in current buffer' })
 
--- pete custom 
+-- pete custom
 vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
 vim.keymap.set('n', '<leader>g^h', require('custom.telescope_pickers').git_diff_files, { desc = 'Search [G]it Diff Files' })
 vim.keymap.set('n', '<leader>g^d', require('custom.telescope_pickers').git_diff_develop, { desc = 'Search [G]it Diff Develop' })
