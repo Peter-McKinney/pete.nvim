@@ -326,6 +326,13 @@ vim.keymap.set('n', '<leader>=', '<C-w>=', { desc = 'resize splits equal', silen
 vim.keymap.set('n', '<leader>pa', '[[<Cmd>let @+=expand(\'%:p\')<CR>]]', { desc = 'Copy absolute path', silent = true })
 vim.keymap.set('n', '<leader>pr', '[[<Cmd>let @+=expand(\'%:t\')<CR>]]', { desc = 'Copy file name', silent = true })
 
+-- [[ sessions ]]
+vim.keymap.set('n', '<leader>ss', ':mksession! ~/vim-sessions/pete-session.vim<CR>', {desc = '[S]ave [S]ession Quick'})
+vim.keymap.set('n', '<leader>sr', ':source ~/vim-sessions/pete-session.vim<CR>', {desc = '[R]estore [S]ession Quick'})
+
+vim.keymap.set('n', '<leader>sns', ':mksession! ~/vim-sessions/', {desc = '[S]ave [S]ession name'})
+vim.keymap.set('n', '<leader>snr', ':source ~/vim-sessions/', {desc = '[R]estore [S]ession name'})
+
 -- [[ Configure autopairs ]]
 require('nvim-autopairs').setup()
 
@@ -361,6 +368,7 @@ vim.keymap.set('n', '<leader>/', function()
 end, { desc = '[/] Fuzzily search in current buffer' })
 
 vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
+vim.keymap.set('n', '<leader>g^', require('custom.telescope_pickers').git_diff_files, { desc = 'Search [G]it Diff Files' })
 vim.keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sj', require('telescope.builtin').jumplist, { desc = '[S]earch [J]ump' })
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
@@ -372,7 +380,6 @@ vim.keymap.set('n', '<leader>gt', require('telescope.builtin').git_stash, { desc
 vim.keymap.set('n', '<leader>fc', require('telescope.builtin').git_commits, { desc = 'Search Git Commits' })
 vim.keymap.set('n', '<leader>fbc', require('telescope.builtin').git_bcommits, { desc = 'Search Git [B]uffer [C]ommits' })
 vim.keymap.set('n', '<leader>fbb', require('telescope.builtin').git_branches, { desc = 'Search Git [Branches]' })
-vim.keymap.set('n', '<leader>fo', require('telescope.builtin').oldfiles, { desc = 'Search [O]ld [F]iles' })
 vim.keymap.set('n', '<leader>sp', require('telescope.builtin').search_history, { desc = '[S]earch [P]revious Searches' })
 vim.keymap.set('n', '<leader>sq', require('telescope.builtin').quickfixhistory, { desc = '[S]earch [q]uickfix history' })
 vim.keymap.set('n', '<leader>sk', require('telescope.builtin').keymaps, { desc = '[S]earch [K]eymaps' })
