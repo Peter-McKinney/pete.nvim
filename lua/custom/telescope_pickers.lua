@@ -4,11 +4,12 @@ local finders = require('telescope.finders')
 local actions = require('telescope.actions')
 local action_state = require('telescope.actions.state')
 local previewers = require('telescope.previewers')
+local conf = require('telescope.config').values
 
 local M = {}
 
-local function get_git_diff_data()
-    local output = vim.fn.system("git diff HEAD^ HEAD")
+local function get_git_diff_data(command)
+    local output = vim.fn.system(command)
     local files = {}
     local current_file
     for line in output:gmatch("[^\r\n]+") do
@@ -22,9 +23,7 @@ local function get_git_diff_data()
     return files
 end
 
-M.git_diff_files = function()
-    local diff_data = get_git_diff_data()
-
+local function create_diff_picker(diff_data)
     local results = {}
     for file, hunks in pairs(diff_data) do
         table.insert(results, {
@@ -36,7 +35,8 @@ M.git_diff_files = function()
     end
 
     pickers.new({}, {
-        prompt_title = 'Git Diff Files',
+        prompt_title = "Git Diff Files",
+
         finder = finders.new_table {
             results = results,
             entry_maker = function(entry)
@@ -64,6 +64,16 @@ M.git_diff_files = function()
             return true
         end,
     }):find()
+end
+
+M.git_diff_files = function()
+    local diff_data = get_git_diff_data("git diff HEAD^ HEAD")
+    create_diff_picker(diff_data)
+end
+
+M.git_diff_develop = function()
+    local diff_data = get_git_diff_data("git diff develop")
+    create_diff_picker(diff_data)
 end
 
 return M
