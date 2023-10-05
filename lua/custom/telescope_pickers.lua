@@ -36,6 +36,7 @@ local function create_diff_picker(diff_data)
 
     pickers.new({}, {
         prompt_title = "Git Diff Files",
+
         finder = finders.new_table {
             results = results,
             entry_maker = function(entry)
