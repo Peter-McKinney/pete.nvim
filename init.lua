@@ -42,6 +42,7 @@ P.S. You can delete this when you're done too. It's your config now :)
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+vim.o.shellcmdflag = '-ic'
 
 -- Install package manager
 --    https://github.com/folke/lazy.nvim
@@ -161,7 +162,6 @@ require('lazy').setup({
     main = "ibl",
     -- Enable `lukas-reineke/indent-blankline.nvim`
     -- See `:help indent_blankline.txt`
-    main = "ibl",
     opts = {},
   },
 
@@ -303,6 +303,9 @@ vim.keymap.set('n', '[q', ':cprev<Enter>', {silent = true})
 vim.keymap.set('n', ']Q', ':clast<Enter>', {silent = true})
 vim.keymap.set('n', '[Q', ':cfirst<Enter>', {silent = true})
 
+-- [[ jira ]]
+vim.keymap.set('n', '<leader>jo', ':!open_ticket<Enter>', { desc = '[J]ira [O]pen Ticket', silent = true })
+
 -- [[ fugitive ]]
 vim.keymap.set('n', '<leader>gb', ':Git blame<Enter>', { desc = '[G]it [b]lame', silent = true })
 vim.keymap.set('n', '<leader>gd', ':Gdiffsplit<Enter>', { desc = '[G]it [d]iff', silent = true })
@@ -310,6 +313,9 @@ vim.keymap.set('n', '<leader>gw', ':GBrowse<Enter>', { desc = '[G]it Bro[w]se', 
 vim.keymap.set('n', '<leader>gP', ':Git push<Enter>', { desc = '[G]it [P]ush', silent = true})
 vim.keymap.set('n', '<leader>gl', ':Gclog<Enter>', { desc = '[G]it [L]og', silent = true})
 vim.keymap.set('n', '<leader>gh', ':0Gclog<Enter>', { desc = '[G]it [H]istory for File', silent = true})
+
+-- [[ gh cli ]]
+vim.keymap.set('n', '<leader>gcp', ':!gh pr view --web<Enter>', { desc = '[G]ithub [C]li [P]R view', silent = true})
 
 vim.keymap.set('n', '<leader>dl', ':diffget //3<Enter>', { desc = '[D]iffget right', silent = true})
 vim.keymap.set('n', '<leader>dh', ':diffget //2<Enter>', { desc = '[D]iffget left', silent = true})
@@ -367,11 +373,13 @@ vim.keymap.set('n', '<leader>/', function()
   })
 end, { desc = '[/] Fuzzily search in current buffer' })
 
--- pete custom 
+-- pete custom
 vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
 vim.keymap.set('n', '<leader>g^h', require('custom.telescope_pickers').git_diff_files, { desc = 'Search [G]it Diff Files' })
 vim.keymap.set('n', '<leader>g^d', require('custom.telescope_pickers').git_diff_develop, { desc = 'Search [G]it Diff Develop' })
+
 vim.keymap.set('n', '<leader>g^l', require('custom.telescope_lint').show, { desc = 'Npm Run [L]int' })
+
 
 vim.keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sj', require('telescope.builtin').jumplist, { desc = '[S]earch [J]ump' })
@@ -503,8 +511,27 @@ local on_attach = function(_, bufnr)
 
   -- Create a command `:Format` local to the LSP buffer
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
-    vim.lsp.buf.format()
-  end, { desc = 'Format current buffer with LSP' })
+    if vim.api.nvim_buf_get_option(bufnr, "modified") then
+      print("Please save all changes before formatting.")
+      return
+    end
+
+    local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
+    local prettier_filetypes = {
+      html = true,
+      css = true,
+      scss = true,
+      javascript = true,
+      typescript = true
+    }
+
+    if prettier_filetypes[filetype] then
+      vim.cmd("silent !prettier --write " .. vim.fn.fnameescape(vim.fn.expand('%:p')))
+      vim.cmd("edit")
+    else
+      vim.lsp.buf.format()
+    end
+  end, { desc = 'Format current buffer with LSP or prettier' })
 end
 
 -- document existing key chains
