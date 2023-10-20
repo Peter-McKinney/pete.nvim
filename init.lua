@@ -526,7 +526,7 @@ local on_attach = function(_, bufnr)
     }
 
     if prettier_filetypes[filetype] then
-      vim.cmd("silent !prettier --write " .. vim.fn.fnameescape(vim.fn.expand('%:p')))
+      vim.cmd("silent !if [ -f ./node_modules/.bin/prettier ]; then ./node_modules/.bin/prettier --write " .. vim.fn.fnameescape(vim.fn.expand('%:p')) .. "; else prettier --write " .. vim.fn.fnameescape(vim.fn.expand('%:p')) .. "; fi")
       vim.cmd("edit")
     else
       vim.lsp.buf.format()
@@ -560,7 +560,8 @@ local servers = {
   -- rust_analyzer = {},
   -- tsserver = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
-  angularls = {},
+  angularls = {
+  },
 
   lua_ls = {
     Lua = {
