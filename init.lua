@@ -218,7 +218,7 @@ require('lazy').setup({
 -- NOTE: You can change these options as you wish!
 
 -- Set highlight on search
-vim.o.hlsearch = false
+vim.o.hlsearch = true
 
 vim.o.swapfile = false
 
@@ -288,8 +288,7 @@ vim.keymap.set('n', '<C-l>', ':wincmd l<Enter>', { silent = true })
 
 vim.keymap.set('n', '<leader>q', ':q<Enter>', { silent = true })
 vim.keymap.set('n', '<leader>w', ':w<Enter>', { silent = true })
-vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<Enter>', { silent = true })
-vim.keymap.set('n', '<leader>fe', ':NvimTreeFindFile<Enter>', { silent = false })
+vim.keymap.set('n', '<leader>e', ':Neotree reveal=true toggle<Enter>', { silent = true })
 
 -- [[ Format ]]
 vim.keymap.set('n', '<leader>lf', ':Format<Enter>', { silent = true })
@@ -341,10 +340,6 @@ vim.keymap.set('n', '<leader>snr', ':source ~/vim-sessions/', {desc = '[R]estore
 -- [[ Configure autopairs ]]
 require('nvim-autopairs').setup()
 
--- -- [[ Configure nvim-tree ]]
-vim.g.loaded_netrwPlugin = 1
-require('nvim-tree').setup()
-
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
 require('telescope').setup {
@@ -379,7 +374,9 @@ vim.keymap.set('n', '<leader>g^h', require('custom.telescope_pickers').git_diff_
 vim.keymap.set('n', '<leader>g^d', require('custom.telescope_pickers').git_diff_develop, { desc = 'Search [G]it Diff Develop' })
 
 vim.keymap.set('n', '<leader>g^l', require('custom.telescope_lint').show, { desc = 'Npm Run [L]int' })
+vim.keymap.set('n', '<leader>le', require('custom.diagnostics').set_error_diagnostics, { desc = 'Set Error Diagnostics' })
 
+vim.keymap.set('n', '<leader>n', ':noh<Enter>', { desc = '[N]o Highlight'})
 
 vim.keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sj', require('telescope.builtin').jumplist, { desc = '[S]earch [J]ump' })
@@ -526,7 +523,7 @@ local on_attach = function(_, bufnr)
     }
 
     if prettier_filetypes[filetype] then
-      vim.cmd("silent !prettier --write " .. vim.fn.fnameescape(vim.fn.expand('%:p')))
+      vim.cmd("silent !if [ -f ./node_modules/.bin/prettier ]; then ./node_modules/.bin/prettier --write " .. vim.fn.fnameescape(vim.fn.expand('%:p')) .. "; else prettier --write " .. vim.fn.fnameescape(vim.fn.expand('%:p')) .. "; fi")
       vim.cmd("edit")
     else
       vim.lsp.buf.format()
@@ -560,7 +557,9 @@ local servers = {
   -- rust_analyzer = {},
   -- tsserver = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
-  angularls = {},
+  angularls = {
+    filetypes = { 'html', 'typescript' }
+  },
 
   lua_ls = {
     Lua = {

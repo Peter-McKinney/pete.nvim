@@ -3,7 +3,6 @@
 --
 -- See the kickstart.nvim README for more information
 return {
-	{ "nvim-tree/nvim-tree.lua" },
 	{ "windwp/nvim-autopairs" },
 	{
 	    "iamcco/markdown-preview.nvim",
