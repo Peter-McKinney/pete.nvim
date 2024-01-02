@@ -25,17 +25,17 @@ local function create_build_errors_table(output)
     local build_errors = {}
 
     for _, line in ipairs(output) do
-        print(line)
         local match = string.match(line, "Error: (.*:%d*%d*)")
         local message = string.match(line, ".*:(.*)")
 
-        print(match, 'match')
         if match then
             local file, lnum, col = unpack(vim.split(match, ":"))
 
             print(file, lnum, col, message)
 
-            unique_insert(build_errors, {
+            print(lnum, col, 'THESE THINGS')
+
+            table.insert(build_errors, {
                 display = string.format("%s - %s", file, message),
                 value = file,
                 filename = file,
@@ -60,17 +60,20 @@ end
 
 M.set_error_diagnostics = function()
     local output = get_lines_from_file("~/build-errors.txt")
-    print(vim.inspect(output))
-
     local build_errors = create_build_errors_table(output)
-    print(vim.inspect(build_errors, 'errors'))
 
     M.set_diagnostics(build_errors, 'Build Errors')
 end
 
-M.set_diagnostics = function(picker_table, prompt_title)
-    print(vim.inspect(picker_table))
+M.clear_build_errors_file = function()
+    local homeDirectory = os.getenv("HOME")
+    local filePath = homeDirectory .. "/" .. "build-errors.txt"
 
+    --passing empty to clear the file
+    vim.fn.writefile({}, filePath)
+end
+
+M.set_diagnostics = function(picker_table, prompt_title)
     pickers.new({}, {
         prompt_title = prompt_title,
         finder = finders.new_table {

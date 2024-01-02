@@ -289,6 +289,7 @@ vim.keymap.set('n', '<C-l>', ':wincmd l<Enter>', { silent = true })
 vim.keymap.set('n', '<leader>q', ':q<Enter>', { silent = true })
 vim.keymap.set('n', '<leader>w', ':w<Enter>', { silent = true })
 vim.keymap.set('n', '<leader>e', ':Neotree reveal=true toggle<Enter>', { silent = true })
+vim.keymap.set('n', '<leader>fe', ':Neotree reveal=true <Enter>', { silent = true })
 
 -- [[ Format ]]
 vim.keymap.set('n', '<leader>lf', ':Format<Enter>', { silent = true })
@@ -348,6 +349,15 @@ require('nvim-autopairs').setup()
 require('telescope').setup {
   debug = true,
   defaults = {
+    vimgrep_arguments = {"rg",
+    "--color=never",
+    "--no-heading",
+    "--with-filename",
+    "--line-number",
+    "--column",
+    "--smart-case",
+    "--multiline",
+    },
     mappings = {
       i = {
         ['<C-u>'] = false,
@@ -378,6 +388,7 @@ vim.keymap.set('n', '<leader>g^d', require('custom.telescope_pickers').git_diff_
 
 vim.keymap.set('n', '<leader>g^l', require('custom.telescope_lint').show, { desc = 'Npm Run [L]int' })
 vim.keymap.set('n', '<leader>le', require('custom.diagnostics').set_error_diagnostics, { desc = 'Set Error Diagnostics' })
+vim.keymap.set('n', '<leader>lce', require('custom.diagnostics').clear_build_errors_file, { desc = 'Clear Error Diagnostics' })
 
 vim.keymap.set('n', '<leader>n', ':noh<Enter>', { desc = '[N]o Highlight'})
 
