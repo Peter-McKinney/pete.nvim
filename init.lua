@@ -339,8 +339,6 @@ vim.keymap.set('n', '<leader>sr', ':source ~/vim-sessions/pete-session.vim<CR>',
 vim.keymap.set('n', '<leader>sns', ':mksession! ~/vim-sessions/', {desc = '[S]ave [S]ession name'})
 vim.keymap.set('n', '<leader>snr', ':source ~/vim-sessions/', {desc = '[R]estore [S]ession name'})
 
-vim.g.loaded_netrwPlugin = 1
-
 -- [[ Configure autopairs ]]
 require('nvim-autopairs').setup()
 
