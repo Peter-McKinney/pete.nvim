@@ -291,6 +291,9 @@ vim.keymap.set('n', '<leader>w', ':w<Enter>', { silent = true })
 vim.keymap.set('n', '<leader>e', ':Neotree reveal=true toggle<Enter>', { silent = true })
 vim.keymap.set('n', '<leader>fe', ':Neotree reveal=true <Enter>', { silent = true })
 
+
+vim.keymap.set('n', '<leader>ns', ':source ~/.config/nvim/init.lua')
+
 -- [[ Format ]]
 vim.keymap.set('n', '<leader>lf', ':Format<Enter>', { silent = true })
 
