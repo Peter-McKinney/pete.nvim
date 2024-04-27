@@ -154,6 +154,8 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
+vim.opt.swapfile = false
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -255,6 +257,13 @@ require('lazy').setup({
         topdelete = { text = '‾' },
         changedelete = { text = '~' },
       },
+      on_attach = function(bufnr)
+        vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk, { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
+        vim.keymap.set('n', '<leader>gn', require('gitsigns').next_hunk, { buffer = bufnr, desc = '[G]o to [N]ext Hunk' })
+        vim.keymap.set('n', '<leader>ph', require('gitsigns').preview_hunk, { buffer = bufnr, desc = '[P]review [H]unk' })
+        vim.keymap.set('n', '<leader>gr', require('gitsigns').reset_hunk, { desc = '[G]it [r]eset Hunk' })
+        vim.keymap.set('n', '<leader>gR', require('gitsigns').reset_buffer, { desc = '[G]it [R]eset Buffer' })
+      end,
     },
   },
 
@@ -285,7 +294,6 @@ require('lazy').setup({
         ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
         ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
         ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-        ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
       }
     end,
   },
@@ -483,7 +491,7 @@ require('lazy').setup({
 
           -- Fuzzy find all the symbols in your current workspace.
           --  Similar to document symbols, except searches over your entire project.
-          map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+          -- map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
@@ -521,6 +529,23 @@ require('lazy').setup({
         end,
       })
 
+      -- I cannot get mason_registry to stop throwing an error so I'm hardcoding the path
+      -- local ok, mason_registry = pcall(require, 'mason-registry')
+      -- if not ok then
+      --   vim.notify 'mason-registry could not be loaded'
+      --   return
+      -- end
+
+      local angularls_path = '~/github/qpp-submission-client'
+
+      local cmd = { 'ngserver', '--stdio', '--tsProbeLocations', angularls_path, '--ngProbeLocations', angularls_path }
+
+      local angularls_config = {
+        cmd = cmd,
+        on_new_config = function(new_config, new_root_dir)
+          new_config.cmd = cmd
+        end,
+      }
       -- LSP servers and clients are able to communicate to each other what features they support.
       --  By default, Neovim doesn't support everything that is in the LSP specification.
       --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
@@ -550,6 +575,10 @@ require('lazy').setup({
         -- But for many setups, the LSP (`tsserver`) will work just fine
         -- tsserver = {},
         --
+        angularls = { angularls_config },
+        cssls = {
+          capabilities = capabilities,
+        },
 
         lua_ls = {
           -- cmd = {...},
@@ -625,6 +654,21 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
+        html = {
+          'prettier',
+        },
+        javascript = {
+          'prettier',
+        },
+        typescript = {
+          'prettier',
+        },
+        css = {
+          'prettier',
+        },
+        scss = {
+          'prettier',
+        },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
@@ -702,7 +746,7 @@ require('lazy').setup({
           -- Accept ([y]es) the completion.
           --  This will auto-import if your LSP supports it.
           --  This will expand snippets if the LSP sent a snippet.
-          ['<C-y>'] = cmp.mapping.confirm { select = true },
+          ['<Tab>'] = cmp.mapping.confirm { select = true },
 
           -- Manually trigger a completion from nvim-cmp.
           --  Generally you don't need this, because nvim-cmp will display
@@ -800,6 +844,9 @@ require('lazy').setup({
   },
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter-textobjects',
+    },
     build = ':TSUpdate',
     opts = {
       ensure_installed = { 'bash', 'c', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc' },
@@ -813,6 +860,50 @@ require('lazy').setup({
         additional_vim_regex_highlighting = { 'ruby' },
       },
       indent = { enable = true, disable = { 'ruby' } },
+      textobjects = {
+        select = {
+          enable = true,
+          lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
+          keymaps = {
+            -- You can use the capture groups defined in textobjects.scm
+            ['aa'] = '@parameter.outer',
+            ['ia'] = '@parameter.inner',
+            ['af'] = '@function.outer',
+            ['if'] = '@function.inner',
+            ['ac'] = '@class.outer',
+            ['ic'] = '@class.inner',
+          },
+        },
+        move = {
+          enable = true,
+          set_jumps = true, -- whether to set jumps in the jumplist
+          goto_next_start = {
+            [']m'] = '@function.outer',
+            [']]'] = '@class.outer',
+          },
+          goto_next_end = {
+            [']M'] = '@function.outer',
+            [']['] = '@class.outer',
+          },
+          goto_previous_start = {
+            ['[m'] = '@function.outer',
+            ['[['] = '@class.outer',
+          },
+          goto_previous_end = {
+            ['[M'] = '@function.outer',
+            ['[]'] = '@class.outer',
+          },
+        },
+        swap = {
+          enable = true,
+          swap_next = {
+            ['<leader>a'] = '@parameter.inner',
+          },
+          swap_previous = {
+            ['<leader>A'] = '@parameter.inner',
+          },
+        },
+      },
     },
     config = function(_, opts)
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
@@ -916,24 +1007,24 @@ vim.keymap.set('n', '<A-Down>', ':resize +2<Enter>')
 vim.keymap.set('n', '<A-Left>', ':vertical resize -2<Enter>')
 vim.keymap.set('n', '<A-Right>', ':vertical resize +2<Enter>')
 vim.keymap.set('n', '<leader>=', '<C-w>=', { desc = 'resize splits equal', silent = true })
+vim.keymap.set('n', '<leader>|', '<C-w>|', { desc = 'max width buffer', silent = true })
 
 vim.keymap.set('n', '<leader>pa', "[[<Cmd>let @+=expand('%:p')<CR>]]", { desc = 'Copy absolute path', silent = true })
 vim.keymap.set('n', '<leader>pr', "[[<Cmd>let @+=expand('%:t')<CR>]]", { desc = 'Copy file name', silent = true })
 
 -- [[ sessions ]]
 -- telescope extension??
-vim.keymap.set('n', '<leader>ss', ':mksession! ~/vim-sessions/pete-session.vim<CR>', { desc = '[S]ave [S]ession Quick' })
-vim.keymap.set('n', '<leader>sr', ':source ~/vim-sessions/pete-session.vim<CR>', { desc = '[R]estore [S]ession Quick' })
+vim.keymap.set('n', '<leader>ms', ':mksession! ~/vim-sessions/pete-session.vim<CR>', { desc = '[S]ave [S]ession Quick' })
+vim.keymap.set('n', '<leader>mr', ':source ~/vim-sessions/pete-session.vim<CR>', { desc = '[R]estore [S]ession Quick' })
 
-vim.keymap.set('n', '<leader>sns', ':mksession! ~/vim-sessions/', { desc = '[S]ave [S]ession name' })
-vim.keymap.set('n', '<leader>snr', ':source ~/vim-sessions/', { desc = '[R]estore [S]ession name' })
+vim.keymap.set('n', '<leader>mns', ':mksession! ~/vim-sessions/', { desc = '[S]ave [S]ession name' })
+vim.keymap.set('n', '<leader>mnr', ':source ~/vim-sessions/', { desc = '[R]estore [S]ession name' })
 
 -- pete custom
 vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
 vim.keymap.set('n', '<leader>g^h', require('custom.telescope_pickers').git_diff_files, { desc = 'Search [G]it Diff Files' })
 vim.keymap.set('n', '<leader>g^d', require('custom.telescope_pickers').git_diff_develop, { desc = 'Search [G]it Diff Develop' })
 
-vim.keymap.set('n', '<leader>g^l', require('custom.telescope_lint').show, { desc = 'Npm Run [L]int' })
 vim.keymap.set('n', '<leader>le', require('custom.diagnostics').set_error_diagnostics, { desc = 'Set Error Diagnostics' })
 
 vim.keymap.set('n', '<leader>n', ':noh<Enter>', { desc = '[N]o Highlight' })
@@ -958,5 +1049,6 @@ vim.keymap.set('n', '<leader>sc', require('telescope.builtin').command_history, 
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>ld', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
+vim.o.shellcmdflag = '-ic'
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
