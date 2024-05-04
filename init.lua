@@ -570,7 +570,7 @@ require('lazy').setup({
         on_new_config = function(new_config, new_root_dir)
           new_config.cmd = cmd
         end,
-      })
+      }
 
       -- I cannot get mason_registry to stop throwing an error so I'm hardcoding the path
       -- local ok, mason_registry = pcall(require, 'mason-registry')
