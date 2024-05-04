@@ -997,12 +997,6 @@ require('lazy').setup({
   },
 })
 
--- [[ Window navigation ]]
-vim.keymap.set('n', '<C-h>', ':wincmd h<Enter>', { silent = true })
-vim.keymap.set('n', '<C-k>', ':wincmd k<Enter>', { silent = true })
-vim.keymap.set('n', '<C-j>', ':wincmd j<Enter>', { silent = true })
-vim.keymap.set('n', '<C-l>', ':wincmd l<Enter>', { silent = true })
-
 vim.keymap.set('n', '<leader>q', ':q<Enter>', { silent = true })
 vim.keymap.set('n', '<leader>w', ':w<Enter>', { silent = true })
 vim.keymap.set('n', '<leader>e', ':Neotree reveal=true toggle<Enter>', { silent = true })
