@@ -554,41 +554,6 @@ require('lazy').setup({
         end,
       })
 
-      -- I cannot get mason_registry to stop throwing an error so I'm hardcoding the path
-      -- local ok, mason_registry = pcall(require, 'mason-registry')
-      -- if not ok then
-      --   vim.notify 'mason-registry could not be loaded'
-      --   return
-      -- end
-
-      local angularls_path = '~/github/qpp-submission-client'
-
-      local cmd = { 'ngserver', '--stdio', '--tsProbeLocations', angularls_path, '--ngProbeLocations', angularls_path }
-
-      local angularls_config = {
-        cmd = cmd,
-        on_new_config = function(new_config, new_root_dir)
-          new_config.cmd = cmd
-        end,
-      }
-
-      -- I cannot get mason_registry to stop throwing an error so I'm hardcoding the path
-      -- local ok, mason_registry = pcall(require, 'mason-registry')
-      -- if not ok then
-      --   vim.notify 'mason-registry could not be loaded'
-      --   return
-      -- end
-
-      local angularls_path = '~/github/qpp-submission-client'
-
-      local cmd = { 'ngserver', '--stdio', '--tsProbeLocations', angularls_path, '--ngProbeLocations', angularls_path }
-
-      local angularls_config = {
-        cmd = cmd,
-        on_new_config = function(new_config, new_root_dir)
-          new_config.cmd = cmd
-        end,
-      }
       -- LSP servers and clients are able to communicate to each other what features they support.
       --  By default, Neovim doesn't support everything that is in the LSP specification.
       --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
@@ -618,7 +583,7 @@ require('lazy').setup({
         -- But for many setups, the LSP (`tsserver`) will work just fine
         -- tsserver = {},
         --
-        angularls = { angularls_config },
+        angularls = {},
         cssls = {
           capabilities = capabilities,
         },
