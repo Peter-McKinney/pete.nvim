@@ -294,9 +294,6 @@ require('lazy').setup({
         ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
         ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
         ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-        ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-        ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
-        ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
       }
       -- visual mode
       require('which-key').register({
@@ -535,6 +532,14 @@ require('lazy').setup({
               group = highlight_augroup,
               callback = vim.lsp.buf.clear_references,
             })
+
+            vim.api.nvim_create_autocmd('LspDetach', {
+              group = vim.api.nvim_create_augroup('kickstart-lsp-detach', { clear = true }),
+              callback = function(event2)
+                vim.lsp.buf.clear_references()
+                vim.api.nvim_clear_autocmds { group = 'kickstart-lsp-highlight', buffer = event2.buf }
+              end,
+            })
           end
 
           -- The following autocommand is used to enable inlay hints in your
@@ -549,11 +554,21 @@ require('lazy').setup({
         end,
       })
 
-      vim.api.nvim_create_autocmd('LspDetach', {
-        group = vim.api.nvim_create_augroup('kickstart-lsp-detach', { clear = true }),
-        callback = function(event)
-          vim.lsp.buf.clear_references()
-          vim.api.nvim_clear_autocmds { group = 'kickstart-lsp-highlight', buffer = event.buf }
+      -- I cannot get mason_registry to stop throwing an error so I'm hardcoding the path
+      -- local ok, mason_registry = pcall(require, 'mason-registry')
+      -- if not ok then
+      --   vim.notify 'mason-registry could not be loaded'
+      --   return
+      -- end
+
+      local angularls_path = '~/github/qpp-submission-client'
+
+      local cmd = { 'ngserver', '--stdio', '--tsProbeLocations', angularls_path, '--ngProbeLocations', angularls_path }
+
+      local angularls_config = {
+        cmd = cmd,
+        on_new_config = function(new_config, new_root_dir)
+          new_config.cmd = cmd
         end,
       })
 
