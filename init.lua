@@ -258,9 +258,9 @@ require('lazy').setup({
         changedelete = { text = '~' },
       },
       on_attach = function(bufnr)
-        vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk, { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
-        vim.keymap.set('n', '<leader>gn', require('gitsigns').next_hunk, { buffer = bufnr, desc = '[G]o to [N]ext Hunk' })
-        vim.keymap.set('n', '<leader>ph', require('gitsigns').preview_hunk, { buffer = bufnr, desc = '[P]review [H]unk' })
+        vim.keymap.set('n', '[g', require('gitsigns').prev_hunk, { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
+        vim.keymap.set('n', ']g', require('gitsigns').next_hunk, { buffer = bufnr, desc = '[G]o to [N]ext Hunk' })
+        vim.keymap.set('n', '<leader>gph', require('gitsigns').preview_hunk, { buffer = bufnr, desc = '[P]review [H]unk' })
         vim.keymap.set('n', '<leader>gr', require('gitsigns').reset_hunk, { desc = '[G]it [r]eset Hunk' })
         vim.keymap.set('n', '<leader>gR', require('gitsigns').reset_buffer, { desc = '[G]it [R]eset Buffer' })
       end,
@@ -1022,8 +1022,13 @@ vim.keymap.set('n', '<A-Right>', ':vertical resize +2<Enter>')
 vim.keymap.set('n', '<leader>=', '<C-w>=', { desc = 'resize splits equal', silent = true })
 vim.keymap.set('n', '<leader>|', '<C-w>|', { desc = 'max width buffer', silent = true })
 
-vim.keymap.set('n', '<leader>pa', "[[<Cmd>let @+=expand('%:p')<CR>]]", { desc = 'Copy absolute path', silent = true })
-vim.keymap.set('n', '<leader>pr', "[[<Cmd>let @+=expand('%:t')<CR>]]", { desc = 'Copy file name', silent = true })
+vim.keymap.set('n', '<leader>pa', function()
+  vim.fn.setreg('+', vim.fn.expand '%:p')
+end, { desc = 'Copy absolute path', silent = true })
+
+vim.keymap.set('n', '<leader>pr', function()
+  vim.fn.setreg('+', vim.fn.expand '%:t')
+end, { desc = 'Copy file name', silent = true })
 
 -- [[ sessions ]]
 -- telescope extension??
@@ -1063,5 +1068,34 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous dia
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>ld', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.o.shellcmdflag = '-ic'
+
+-- toggle hidden file searching in telescope
+function _G.toggle_hidden_file_searching()
+  _G.hidden_files = not _G.hidden_files
+
+  require('telescope').setup {
+    defaults = {
+      vimgrep_arguments = {
+        'rg',
+        '--color=never',
+        '--no-heading',
+        '--with-filename',
+        '--line-number',
+        '--column',
+        '--smart-case',
+        (_G.hidden_files and '--hidden' or ''),
+      },
+    },
+    pickers = {
+      find_files = {
+        hidden = _G.hidden_files,
+      },
+    },
+  }
+
+  print('Telescope hidden files searching: ' .. (_G.hidden_files and 'enabled' or 'disabled'))
+end
+
+vim.api.nvim_set_keymap('n', '<leader>th', ':lua toggle_hidden_file_searching()<Enter>', { noremap = true, silent = true })
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
