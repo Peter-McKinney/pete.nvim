@@ -1063,6 +1063,14 @@ vim.keymap.set('n', '<leader>sq', require('telescope.builtin').quickfixhistory, 
 vim.keymap.set('n', '<leader>sk', require('telescope.builtin').keymaps, { desc = '[S]earch [K]eymaps' })
 vim.keymap.set('n', '<leader>sc', require('telescope.builtin').command_history, { desc = '[S]earch [C]ommand history' })
 
+vim.api.nvim_set_keymap('n', '<C-b>', '<C-a>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('v', '<C-b>', '<C-a>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('i', '<C-b>', '<C-a>', { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap('n', 'g<C-b>', 'g<C-a>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('v', 'g<C-b>', 'g<C-a>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('i', 'g<C-b>', 'g<C-a>', { noremap = true, silent = true })
+
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
