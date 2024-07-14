@@ -1108,6 +1108,6 @@ function _G.toggle_hidden_file_searching()
   print('Telescope hidden files searching: ' .. (_G.hidden_files and 'enabled' or 'disabled'))
 end
 
-vim.api.nvim_set_keymap('n', '<leader>th', ':lua toggle_hidden_file_searching()<Enter>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>ts', ':lua toggle_hidden_file_searching()<Enter>', { noremap = true, silent = true })
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

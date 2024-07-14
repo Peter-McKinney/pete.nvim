@@ -14,6 +14,8 @@ return {
         },
       }
 
+      vim.g.loaded_netrw = nil
+      vim.g.loaded_netrwPlugin = nil
       -- Open parent directory in current window
       vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
 
