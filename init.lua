@@ -679,6 +679,9 @@ require('lazy').setup({
         scss = {
           'prettier',
         },
+        sh = {
+          'beautysh',
+        },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
