@@ -1068,10 +1068,6 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnos
 vim.keymap.set('n', '<leader>ld', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.o.shellcmdflag = '-ic'
 
-vim.keymap.set('n', '<leader>h', function()
-  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-end)
-
 -- toggle hidden file searching in telescope
 function _G.toggle_hidden_file_searching()
   _G.hidden_files = not _G.hidden_files
