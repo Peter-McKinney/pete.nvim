@@ -492,7 +492,7 @@ require('lazy').setup({
         -- languages here or re-enable it for the disabled ones.
         local disable_filetypes = { c = true, cpp = true }
         return {
-          timeout_ms = 500,
+          timeout_ms = 1000,
           lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
         }
       end,
@@ -515,6 +515,9 @@ require('lazy').setup({
         },
         sh = {
           'beautysh',
+        },
+        yaml = {
+          'yamlfmt',
         },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
