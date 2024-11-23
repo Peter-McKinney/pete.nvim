@@ -76,4 +76,9 @@ M.git_diff_develop = function()
   create_diff_picker(diff_data)
 end
 
+M.git_diff_master = function()
+  local diff_data = get_git_diff_data 'git diff master'
+  create_diff_picker(diff_data)
+end
+
 return M

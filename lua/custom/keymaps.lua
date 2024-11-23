@@ -1,3 +1,12 @@
+-- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
+-- or just use <C-\><C-n> to exit terminal mode
+vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+
+vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
+vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
+vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
+vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
 vim.api.nvim_set_keymap('n', '<leader>ts', ':lua toggle_hidden_file_searching()<Enter>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>tc', ':tabnew<Enter>', { desc = '[T]ab [C]reate', noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>tn', ':tabnext<Enter>', { desc = '[T]ab [N]ext', noremap = true, silent = true })
@@ -61,8 +70,9 @@ vim.keymap.set('n', '<leader>mnr', ':source ~/vim-sessions/', { desc = '[R]estor
 
 -- pete custom
 vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
-vim.keymap.set('n', '<leader>g^h', require('custom.telescope_pickers').git_diff_files, { desc = 'Search [G]it Diff Files' })
-vim.keymap.set('n', '<leader>g^d', require('custom.telescope_pickers').git_diff_develop, { desc = 'Search [G]it Diff Develop' })
+vim.keymap.set('n', '<leader>g^h', require('custom.telescope_pickers').git_diff_files, { desc = 'Search [G]it [^] Diff [H]ead' })
+vim.keymap.set('n', '<leader>g^d', require('custom.telescope_pickers').git_diff_develop, { desc = 'Search [G]it [^] Diff [D]evelop' })
+vim.keymap.set('n', '<leader>g^m', require('custom.telescope_pickers').git_diff_master, { desc = 'Search [G]it [^] Diff [M]aster' })
 
 vim.keymap.set('n', '<leader>le', require('custom.diagnostics').set_error_diagnostics, { desc = 'Set Error Diagnostics' })
 
