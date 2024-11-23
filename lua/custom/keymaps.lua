@@ -9,6 +9,7 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 
 vim.api.nvim_set_keymap('n', '<leader>ts', ':lua toggle_hidden_file_searching()<Enter>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>tc', ':tabnew<Enter>', { desc = '[T]ab [C]reate', noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>tq', ':tabclose<Enter>', { desc = '[T]ab [P]rev', noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>tn', ':tabnext<Enter>', { desc = '[T]ab [N]ext', noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>tp', ':tabprev<Enter>', { desc = '[T]ab [P]rev', noremap = true, silent = true })
 
