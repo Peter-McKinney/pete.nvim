@@ -40,6 +40,7 @@ return { -- Autoformat
         angular = { 'prettier', 'eslint' },
         html = { 'prettier', 'eslint' },
         css = { 'prettier' },
+        yaml = { 'yamlfmt' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
