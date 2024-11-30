@@ -75,6 +75,8 @@ vim.keymap.set('n', '<leader>g^h', require('custom.telescope_pickers').git_diff_
 vim.keymap.set('n', '<leader>g^d', require('custom.telescope_pickers').git_diff_develop, { desc = 'Search [G]it [^] Diff [D]evelop' })
 vim.keymap.set('n', '<leader>g^m', require('custom.telescope_pickers').git_diff_master, { desc = 'Search [G]it [^] Diff [M]aster' })
 
+vim.keymap.set('n', '<leader>ef', ':EslintFixAll<CR>', { desc = '[E]slint[F]iAll' })
+
 vim.keymap.set('n', '<leader>le', require('custom.diagnostics').set_error_diagnostics, { desc = 'Set Error Diagnostics' })
 
 vim.keymap.set('n', '<leader>n', ':noh<Enter>', { desc = '[N]o Highlight' })
