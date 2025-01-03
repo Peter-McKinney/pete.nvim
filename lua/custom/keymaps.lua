@@ -75,7 +75,10 @@ vim.keymap.set('n', '<leader>g^h', require('custom.telescope_pickers').git_diff_
 vim.keymap.set('n', '<leader>g^d', require('custom.telescope_pickers').git_diff_develop, { desc = 'Search [G]it [^] Diff [D]evelop' })
 vim.keymap.set('n', '<leader>g^m', require('custom.telescope_pickers').git_diff_master, { desc = 'Search [G]it [^] Diff [M]aster' })
 
-vim.keymap.set('n', '<leader>ef', ':EslintFixAll<CR>', { desc = '[E]slint[F]iAll' })
+-- coverage reports
+vim.keymap.set('n', '<leader>cc', require('custom.open_coverage_report').open_coverage_at_current_line, { desc = '[CC]overage report at line' })
+
+vim.keymap.set('n', '<leader>ef', ':EslintFixAll<CR>', { desc = '[E]slint[F]ixAll' })
 
 vim.keymap.set('n', '<leader>le', require('custom.diagnostics').set_error_diagnostics, { desc = 'Set Error Diagnostics' })
 
