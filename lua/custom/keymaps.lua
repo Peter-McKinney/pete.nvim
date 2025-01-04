@@ -80,8 +80,6 @@ vim.keymap.set('n', '<leader>cc', require('custom.open_coverage_report').open_co
 
 vim.keymap.set('n', '<leader>ef', ':EslintFixAll<CR>', { desc = '[E]slint[F]ixAll' })
 
-vim.keymap.set('n', '<leader>le', require('custom.diagnostics').set_error_diagnostics, { desc = 'Set Error Diagnostics' })
-
 vim.keymap.set('n', '<leader>n', ':noh<Enter>', { desc = '[N]o Highlight' })
 
 vim.keymap.set('n', '<leader>sj', require('telescope.builtin').jumplist, { desc = '[S]earch [J]ump' })
