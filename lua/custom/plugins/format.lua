@@ -31,12 +31,12 @@ return { -- Autoformat
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        javascript = { 'prettier', 'eslint' },
-        json = { 'prettier' },
-        typescript = { 'prettier', 'eslint' },
-        angular = { 'prettier', 'eslint' },
-        html = { 'prettier', 'eslint' },
-        css = { 'prettier' },
+        javascript = { 'eslint_d', 'prettierd' },
+        json = { 'prettierd' },
+        typescript = { 'eslint_d', 'prettierd' },
+        angular = { 'eslint_d', 'prettierd' },
+        html = { 'eslint_d', 'prettierd' },
+        css = { 'prettierd' },
         yaml = { 'yamlfmt' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
