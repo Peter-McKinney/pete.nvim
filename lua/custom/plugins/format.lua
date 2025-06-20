@@ -37,6 +37,7 @@ return { -- Autoformat
         angular = { 'eslint_d', 'prettierd' },
         html = { 'eslint_d', 'prettierd' },
         css = { 'prettierd' },
+        scss = { 'prettierd' },
         yaml = { 'yamlfmt' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },

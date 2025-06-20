@@ -77,6 +77,7 @@ vim.keymap.set('n', '<leader>g^m', require('custom.telescope_pickers').git_diff_
 
 -- coverage reports
 vim.keymap.set('n', '<leader>cc', require('custom.open_coverage_report').open_coverage_at_current_line, { desc = '[CC]overage report at line' })
+vim.keymap.set('n', '<leader>ca', ':ColorizerToggle<CR>', { desc = '[C]olorizer [A]ttach' })
 
 vim.keymap.set('n', '<leader>ef', ':EslintFixAll<CR>', { desc = '[E]slint[F]ixAll' })
 
@@ -111,3 +112,6 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous dia
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>ld', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 -- vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+
+-- copilot
+vim.keymap.set('n', '<leader>cp', ':Copilot panel<Enter>', { desc = '[C]opilot [P]anel', silent = true })
