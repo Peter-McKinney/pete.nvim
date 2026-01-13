@@ -45,6 +45,29 @@ vim.keymap.set('n', '<leader>dl', ':diffget //3<Enter>', { desc = '[D]iffget rig
 vim.keymap.set('n', '<leader>dh', ':diffget //2<Enter>', { desc = '[D]iffget left', silent = true })
 vim.keymap.set('n', '<leader>dm', ':Gvdiffsplit!<Enter>', { desc = 'Three Way Diff Merge', silent = true })
 
+-- [[ documentation ]]
+vim.keymap.set('n', '<leader>dy', function()
+  local file = vim.fn.expand '%:t'
+
+  vim.fn.jobstart({
+    'bash',
+    '-c',
+    [[
+file="$1"
+
+# replace extension with .html
+rel="${file%.*}.html"
+
+gh repo view --json nameWithOwner -q .nameWithOwner |
+  xargs -I {} gh api "repos/{}/pages" |
+  jq -r '.html_url' |
+  xargs -I {} open "{}compodoc/additional-documentation/api-response-interfaces/$rel"
+    ]],
+    'nvim-ghpages-open',
+    file,
+  }, { detach = true })
+end, { desc = 'Open current file on GitHub Pages' })
+
 -- [[ resize splits ]]
 vim.keymap.set('n', '<A-Up>', ':resize -2<Enter>')
 vim.keymap.set('n', '<A-Down>', ':resize +2<Enter>')

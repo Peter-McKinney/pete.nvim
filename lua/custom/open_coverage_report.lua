@@ -10,7 +10,7 @@ local function get_current_line()
 end
 
 local function get_file_path()
-  local prefix_to_remove = '/Users/43159/github/qpp-submission-client'
+  local prefix_to_remove = '/Users/PMcKinney/github/QPP/qpp-submissions-feedback-ui/src'
 
   local file_path = vim.api.nvim_buf_get_name(0)
   local sanitized_file_path = string.gsub(file_path, escape_pattern(prefix_to_remove), '')
