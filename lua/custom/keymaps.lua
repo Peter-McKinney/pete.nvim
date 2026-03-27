@@ -80,6 +80,10 @@ vim.keymap.set('n', '<leader>pa', function()
   vim.fn.setreg('+', vim.fn.expand '%:p')
 end, { desc = 'Copy absolute path', silent = true })
 
+vim.keymap.set('n', '<leader>pd', function()
+  vim.fn.setreg('+', vim.fn.expand '%:p:h')
+end, { desc = 'Copy absolute path', silent = true })
+
 vim.keymap.set('n', '<leader>pr', function()
   vim.fn.setreg('+', vim.fn.expand '%:t')
 end, { desc = 'Copy file name', silent = true })
@@ -96,7 +100,8 @@ vim.keymap.set('n', '<leader>mnr', ':source ~/vim-sessions/', { desc = '[R]estor
 vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
 vim.keymap.set('n', '<leader>g^h', require('custom.telescope_pickers').git_diff_files, { desc = 'Search [G]it [^] Diff [H]ead' })
 vim.keymap.set('n', '<leader>g^d', require('custom.telescope_pickers').git_diff_develop, { desc = 'Search [G]it [^] Diff [D]evelop' })
-vim.keymap.set('n', '<leader>g^m', require('custom.telescope_pickers').git_diff_master, { desc = 'Search [G]it [^] Diff [M]aster' })
+vim.keymap.set('n', '<leader>g^m', require('custom.telescope_pickers').git_diff_master, { desc = 'Search [G]it [^] Diff [m]aster' })
+vim.keymap.set('n', '<leader>g^M', require('custom.telescope_pickers').git_diff_main, { desc = 'Search [G]it [^] Diff [M]ain' })
 
 -- coverage reports
 vim.keymap.set('n', '<leader>cc', require('custom.open_coverage_report').open_coverage_at_current_line, { desc = '[CC]overage report at line' })

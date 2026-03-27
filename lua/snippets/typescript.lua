@@ -87,4 +87,39 @@ return {
       '}',
     },
   }),
+
+  s('unitinput', {
+    t {
+      "fixture.componentRef.setInput('', {});",
+    },
+  }),
+  s('provhttp', {
+    t {
+      'providers: [',
+      'provideHttpClient(),',
+      'provideHttpClientTesting()',
+      ']',
+    },
+  }),
+  s('storyhttp', {
+    t {
+      'decorators: [',
+      'applicationConfig({',
+      'providers: [provideHttpClient()],',
+      '}),',
+      '],',
+    },
+  }),
+  s('mswhandler', {
+    t {
+      "import { http, HttpResponse } from 'msw';",
+      "import { ApiUrlService } from '../app/shared/api-url.service';",
+      '',
+      'export const newHandlerName = [',
+      'http.get(ApiUrlService.getEndpoint(), () => {',
+      'return HttpResponse.json(handlerResponse);',
+      '}),',
+      '];',
+    },
+  }),
 }
