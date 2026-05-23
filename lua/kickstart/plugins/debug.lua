@@ -95,6 +95,7 @@ return {
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
         'delve',
+        'js-debug-adapter',
       },
     }
 
@@ -144,5 +145,156 @@ return {
         detached = vim.fn.has 'win32' == 0,
       },
     }
+
+    -- Node.js / TypeScript / NestJS debugging via vscode-js-debug (installed by mason)
+    local js_debug_path = vim.fn.stdpath 'data' .. '/mason/packages/js-debug-adapter'
+
+    -- Locate a Chrome/Chromium binary for pwa-chrome launch configs.
+    -- pwa-chrome's default search only checks PATH, which usually misses macOS app bundles.
+    local function find_chrome()
+      local candidates = {
+        '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+      }
+      for _, path in ipairs(candidates) do
+        if vim.fn.executable(path) == 1 then
+          return path
+        end
+      end
+      for _, name in ipairs { 'google-chrome', 'chromium', 'chrome' } do
+        if vim.fn.executable(name) == 1 then
+          return name
+        end
+      end
+      return nil
+    end
+    local chrome_bin = find_chrome()
+
+    for _, adapter in ipairs { 'pwa-node', 'pwa-chrome', 'node-terminal' } do
+      dap.adapters[adapter] = {
+        type = 'server',
+        host = 'localhost',
+        port = '${port}',
+        executable = {
+          command = 'node',
+          args = { js_debug_path .. '/js-debug/src/dapDebugServer.js', '${port}' },
+        },
+      }
+    end
+
+    -- Map legacy "node" type onto pwa-node so launch.json files still work
+    dap.adapters.node = function(cb, config)
+      if config.type == 'node' then
+        config.type = 'pwa-node'
+      end
+      local native = dap.adapters['pwa-node']
+      if type(native) == 'function' then
+        native(cb, config)
+      else
+        cb(native)
+      end
+    end
+
+    for _, lang in ipairs { 'javascript', 'typescript', 'javascriptreact', 'typescriptreact' } do
+      dap.configurations[lang] = {
+        {
+          type = 'pwa-node',
+          request = 'launch',
+          name = 'NestJS: npm run start:debug',
+          runtimeExecutable = 'npm',
+          runtimeArgs = { 'run', 'start:debug' },
+          cwd = '${workspaceFolder}',
+          console = 'integratedTerminal',
+          internalConsoleOptions = 'neverOpen',
+          sourceMaps = true,
+          skipFiles = { '<node_internals>/**', 'node_modules/**' },
+          resolveSourceMapLocations = { '${workspaceFolder}/**', '!**/node_modules/**' },
+        },
+        {
+          type = 'pwa-node',
+          request = 'attach',
+          name = 'Attach: NestJS --inspect 9229',
+          address = 'localhost',
+          port = 9229,
+          localRoot = '${workspaceFolder}',
+          remoteRoot = '${workspaceFolder}',
+          sourceMaps = true,
+          restart = true,
+          skipFiles = { '<node_internals>/**', 'node_modules/**' },
+        },
+        {
+          type = 'pwa-node',
+          request = 'attach',
+          name = 'Attach: pick process',
+          processId = require('dap.utils').pick_process,
+          cwd = '${workspaceFolder}',
+          sourceMaps = true,
+          skipFiles = { '<node_internals>/**', 'node_modules/**' },
+        },
+        {
+          type = 'pwa-node',
+          request = 'launch',
+          name = 'Launch current file (ts-node)',
+          runtimeExecutable = 'node',
+          runtimeArgs = { '--loader=ts-node/esm' },
+          args = { '${file}' },
+          cwd = '${workspaceFolder}',
+          sourceMaps = true,
+          protocol = 'inspector',
+          skipFiles = { '<node_internals>/**', 'node_modules/**' },
+          resolveSourceMapLocations = { '${workspaceFolder}/**', '!**/node_modules/**' },
+        },
+        {
+          type = 'pwa-node',
+          request = 'launch',
+          name = 'Jest: debug current file',
+          runtimeExecutable = 'node',
+          runtimeArgs = {
+            '${workspaceFolder}/node_modules/.bin/jest',
+            '--runInBand',
+            '--no-coverage',
+            '${file}',
+          },
+          cwd = '${workspaceFolder}',
+          console = 'integratedTerminal',
+          internalConsoleOptions = 'neverOpen',
+          sourceMaps = true,
+          skipFiles = { '<node_internals>/**', 'node_modules/**' },
+        },
+        {
+          -- Requires `ng serve` to already be running on :4200
+          type = 'pwa-chrome',
+          request = 'launch',
+          name = 'Angular: Launch Chrome @ localhost:4200',
+          url = 'http://localhost:4200',
+          webRoot = '${workspaceFolder}',
+          runtimeExecutable = chrome_bin,
+          sourceMaps = true,
+          userDataDir = vim.fn.stdpath 'cache' .. '/dap-chrome',
+          sourceMapPathOverrides = {
+            ['webpack:///./*'] = '${webRoot}/*',
+            ['webpack:///src/*'] = '${webRoot}/src/*',
+            ['webpack:///*'] = '*',
+            ['webpack:///./~/*'] = '${webRoot}/node_modules/*',
+          },
+          skipFiles = { '<node_internals>/**', 'node_modules/**', '**/webpack/**' },
+        },
+        {
+          -- Attach to a Chrome started with `--remote-debugging-port=9222`
+          type = 'pwa-chrome',
+          request = 'attach',
+          name = 'Angular: Attach to Chrome :9222',
+          port = 9222,
+          webRoot = '${workspaceFolder}',
+          sourceMaps = true,
+          sourceMapPathOverrides = {
+            ['webpack:///./*'] = '${webRoot}/*',
+            ['webpack:///src/*'] = '${webRoot}/src/*',
+            ['webpack:///*'] = '*',
+            ['webpack:///./~/*'] = '${webRoot}/node_modules/*',
+          },
+          skipFiles = { '<node_internals>/**', 'node_modules/**', '**/webpack/**' },
+        },
+      }
+    end
   end,
 }
