@@ -26,7 +26,7 @@ sudo mv /tmp/nvim-stable /usr/local/bin;
 ### Install External Dependencies
 
 External Requirements:
-- Basic utils: `git`, `make`, `unzip`, C Compiler (`gcc`)
+- Basic utils: `git`, `make`, `unzip`, C Compiler (`gcc`), tree-sitter CLI
 - [ripgrep](https://github.com/BurntSushi/ripgrep#installation)
 - Clipboard tool (xclip/xsel/win32yank or other depending on the platform)
 - A [Nerd Font](https://www.nerdfonts.com/): optional, provides various icons

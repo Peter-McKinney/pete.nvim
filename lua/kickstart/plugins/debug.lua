@@ -131,6 +131,8 @@ return {
       }
     end
 
+    dap.set_log_level 'TRACE'
+
     -- Map legacy "node" type onto pwa-node so launch.json files still work
     dap.adapters.node = function(cb, config)
       if config.type == 'node' then
@@ -199,6 +201,7 @@ return {
           name = 'Jest: debug current file',
           runtimeExecutable = 'node',
           runtimeArgs = {
+            '--inspect-brk',
             '${workspaceFolder}/node_modules/.bin/jest',
             '--runInBand',
             '--no-coverage',
@@ -208,7 +211,11 @@ return {
           console = 'integratedTerminal',
           internalConsoleOptions = 'neverOpen',
           sourceMaps = true,
-          skipFiles = { '<node_internals>/**', 'node_modules/**' },
+          skipFiles = { '<node_internals>/**', '**/node_modules/**' },
+          resolveSourceMapLocations = {
+            '${workspaceFolder}/**',
+            '!**/node_modules/**',
+          },
         },
         {
           -- Requires `ng serve` to already be running on :4200
